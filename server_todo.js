@@ -14,10 +14,6 @@ let allowedFileExtensions = ['.html', '.css', '.js', '.jpg', '.jpeg', '.png', '.
 let routeMap = [{
         path: 'home',
         route: 'home.html'
-    },
-    {
-        path: 'about',
-        route: 'about.html'
     }
 ]
 
@@ -43,10 +39,9 @@ const server = http.createServer(function (req, res) {
             if (filePath === '/' + map.path) {
 
                 // set route
-                filePath = map.route;
 
                 // update file extension
-                fileExtension = path.extname(filePath);
+
             }
         })
     }
@@ -64,10 +59,6 @@ const server = http.createServer(function (req, res) {
     fs.readFile(f, function(err, data) {
         if (err) {
             
-            // avoid showing an error, send text or a 404 html page
-            res.statusCode = 404;
-            res.setHeader('Content-Type', 'text/plain');
-            res.end('File not found');
 
             return;
         }
@@ -75,28 +66,11 @@ const server = http.createServer(function (req, res) {
         // no errors
         // decide content type
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
-        // could be a module...
-        let headerContentType;
+        let headerContentType = 'text/html';
         
         switch (fileExtension) {
             case '.html':
                 headerContentType = 'text/html';
-                break;
-            case '.jpg':
-            case '.jpeg':
-                headerContentType = 'image/jpeg';
-                break;
-            case '.gif':
-                headerContentType = 'image/gif';
-                break;
-            case '.png':
-                headerContentType = 'image/png';
-                break;
-            case '.css':
-                headerContentType = 'text/css';
-                break;
-            case '.js':
-                headerContentType = 'text/javascript';
                 break;
             default:
                 headerContentType = 'text/plain';
